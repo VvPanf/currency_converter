@@ -19,7 +19,7 @@
 
 **Рекомендации для сборки и запуска проекта:
 - Создать на сервере базы данных пользователя **convert_user** и паролем **1234**
-'''sql
+```sql
 CREATE ROLE convert_user WITH
   LOGIN
   NOSUPERUSER
@@ -29,9 +29,9 @@ CREATE ROLE convert_user WITH
   REPLICATION
   CONNECTION LIMIT -1
   PASSWORD '1234';
-'''
+```
 - Создать на сервере базу данны **currency-converter**
-'''sql
+```sql
   CREATE DATABASE "currency-converter"
     WITH 
     OWNER = convert_user
@@ -40,9 +40,9 @@ CREATE ROLE convert_user WITH
     LC_CTYPE = 'Russian_Russia.1251'
     TABLESPACE = pg_default
     CONNECTION LIMIT = -1;
-'''
+```
 - Создать таблицы и заполнить в них необходимые данные
-'''sql
+```sql
   create table if not exists Users (
 	user_id serial primary key,
 	user_name varchar(20) not null,
@@ -79,6 +79,6 @@ values ('admin', 'admin');
 
 insert into currency_list
 values (1,643,'RUB','Российский рубль',1.);
-'''
+```
 - Создать исполняемый **jar** файл командой **mvn clean package**
 - Для запуска **jar** файла из командной строки необходимо перейти в папку с **jar** файлом и воспользоваться командой **java -jar test-1.0-SNAPSHOT.jar**
