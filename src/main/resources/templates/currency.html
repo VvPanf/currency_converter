@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Currency</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/currency}">Курс валют</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/converter}">Конвертация</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/history}">Исторя конвертаций</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/login}">Войти</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/registration}">Регистрация</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/logout}">Выйти</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+    <h1 class="text-center">Курс валют на сегодня</h1>
+    <div class="mt-5">
+    <table class="table">
+        <tr>
+            <th scope="col">No</th>
+            <th scope="col">Числовой код</th>
+            <th scope="col">Символьный код</th>
+            <th scope="col">Название</th>
+            <th scope="col">Номинал</th>
+            <th scope="col">Значение</th>
+            <th scope="col">Дата</th>
+        </tr>
+        <tr th:each="c, state : ${currdto}">
+            <td scope="row" th:utext="${state.count}">id</td>
+            <td th:utext="${c[1]}">numCode</td>
+            <td th:utext="${c[2]}">code</td>
+            <td th:utext="${c[3]}">currName</td>
+            <td th:utext="${c[4]}">nominal</td>
+            <td th:utext="${c[5]}">value</td>
+            <td th:utext="${c[6]}">date</td>
+        </tr>
+    </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Convert</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/currency}">Курс валют</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/converter}">Конвертация</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/history}">Исторя конвертаций</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/login}">Войти</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/registration}">Регистрация</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/logout}">Выйти</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+    <h1 class="text-center">История конвертаций</h1>
+    <div class="mt-5">
+        <form form method="post" th:object="${historyFilter}" th:action="@{/history}">
+            <div class="container">
+                <div class="row my-3">
+                    <div class="col">
+                        <input type="date" name="date" th:field="*{historyDate}" class="form-control">
+                    </div>
+                    <div class="col">
+                        <select th:field="*{historyFromCurr}" class="form-control">
+                            <option th:each="c : ${currSelect}" th:value="${c.id}" th:text="|${c.code} (${c.currName})|"></option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <select th:field="*{historyToCurr}" class="form-control">
+                            <option th:each="c : ${currSelect}" th:value="${c.id}" th:text="|${c.code} (${c.currName})|"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row my-3">
+                <div class="col text-center">
+                    <button type="submit" class="btn btn-dark">Найти</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <table class="table">
+        <tr>
+            <th scope="col">No</th>
+            <th scope="col">Исходная валюта</th>
+            <th scope="col">Целевая валюта</th>
+            <th scope="col">Исходная сумма</th>
+            <th scope="col">Получаемая сумма</th>
+            <th scope="col">Дата</th>
+        </tr>
+        <tr th:each="c, state : ${converts}">
+            <td scope="row" th:utext="${state.count}">id</td>
+            <td th:utext="${c[1]}">fromCurr</td>
+            <td th:utext="${c[2]}">toCurr</td>
+            <td th:utext="${c[3]}">fromValue</td>
+            <td th:utext="${c[4]}">toValue</td>
+            <td th:utext="${c[5]}">date</td>
+        </tr>
+    </table>
+</body>
+</html>
