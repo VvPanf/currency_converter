@@ -1,5 +1,6 @@
 package converter.dto;
 
+import converter.entity.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,31 +13,8 @@ import java.sql.Date;
 @Data
 @NoArgsConstructor
 public class HistoryFilter {
-    private Date historyDate;
-    private Integer historyFromCurr;
-    private Integer historyToCurr;
-
-    public Date getHistoryDate() {
-        return historyDate;
-    }
-
-    public void setHistoryDate(Date historyDate) {
-        this.historyDate = historyDate;
-    }
-
-    public Integer getHistoryFromCurr() {
-        return historyFromCurr;
-    }
-
-    public void setHistoryFromCurr(Integer historyFromCurr) {
-        this.historyFromCurr = historyFromCurr;
-    }
-
-    public Integer getHistoryToCurr() {
-        return historyToCurr;
-    }
-
-    public void setHistoryToCurr(Integer historyToCurr) {
-        this.historyToCurr = historyToCurr;
-    }
+    private User user;
+    private Date date;
+    private Long amountCurr;
+    private Long resultCurr;
 }

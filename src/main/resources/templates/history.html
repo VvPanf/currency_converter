@@ -38,16 +38,16 @@
             <div class="container">
                 <div class="row my-3">
                     <div class="col">
-                        <input type="date" name="date" th:field="*{historyDate}" class="form-control">
+                        <input type="date" name="date" th:field="*{date}" class="form-control">
                     </div>
                     <div class="col">
-                        <select th:field="*{historyFromCurr}" class="form-control">
-                            <option th:each="c : ${currSelect}" th:value="${c.id}" th:text="|${c.code} (${c.currName})|"></option>
+                        <select th:field="*{amountCurr}" class="form-control">
+                            <option th:each="c : ${currSelect}" th:value="${c.id}" th:text="|${c.chrCode} (${c.currName})|"></option>
                         </select>
                     </div>
                     <div class="col">
-                        <select th:field="*{historyToCurr}" class="form-control">
-                            <option th:each="c : ${currSelect}" th:value="${c.id}" th:text="|${c.code} (${c.currName})|"></option>
+                        <select th:field="*{resultCurr}" class="form-control">
+                            <option th:each="c : ${currSelect}" th:value="${c.id}" th:text="|${c.chrCode} (${c.currName})|"></option>
                         </select>
                     </div>
                 </div>
@@ -70,11 +70,11 @@
         </tr>
         <tr th:each="c, state : ${converts}">
             <td scope="row" th:utext="${state.count}">id</td>
-            <td th:utext="${c[1]}">fromCurr</td>
-            <td th:utext="${c[2]}">toCurr</td>
-            <td th:utext="${c[3]}">fromValue</td>
-            <td th:utext="${c[4]}">toValue</td>
-            <td th:utext="${c[5]}">date</td>
+            <td th:utext="${c.amountCurr}">amountCurr</td>
+            <td th:utext="${c.resultCurr}">resultCurr</td>
+            <td th:utext="${c.amount}">amount</td>
+            <td th:utext="${c.result}">result</td>
+            <td th:utext="${c.date}">date</td>
         </tr>
     </table>
 </body>

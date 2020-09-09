@@ -57,20 +57,20 @@ public class XmlHandler extends DefaultHandler {
                 currency.setNumCode(elementValue);
                 break;
             case "CHARCODE" :
-                currency.setCode(elementValue);
+                currency.setChrCode(elementValue);
                 break;
             case "NOMINAL" :
                 currency.setNominal(Integer.parseInt(elementValue));
                 break;
             case "NAME" :
                 currency.setCurrName(elementValue);
-                if(currencyRepo.findByCode(currency.getCode())==null){
+                if(currencyRepo.findByChrCode(currency.getChrCode())==null){
                     currencyRepo.save(currency);
                 }
-                currency = currencyRepo.findByCode(currency.getCode());
+                currency = currencyRepo.findByChrCode(currency.getChrCode());
                 break;
             case "VALUE" :
-                rate.setCurrId(currency.getId());
+                rate.setCurrency(currency);
                 rate.setDate(new Date(System.currentTimeMillis()));
                 rate.setValue(Double.valueOf(elementValue.replace(',','.')));
                 list.add(rate);

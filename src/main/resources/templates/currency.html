@@ -43,14 +43,14 @@
             <th scope="col">Значение</th>
             <th scope="col">Дата</th>
         </tr>
-        <tr th:each="c, state : ${currdto}">
+        <tr th:each="c, state : ${currRates}">
             <td scope="row" th:utext="${state.count}">id</td>
-            <td th:utext="${c[1]}">numCode</td>
-            <td th:utext="${c[2]}">code</td>
-            <td th:utext="${c[3]}">currName</td>
-            <td th:utext="${c[4]}">nominal</td>
-            <td th:utext="${c[5]}">value</td>
-            <td th:utext="${c[6]}">date</td>
+            <td th:utext="${c.currency.numCode}">numCode</td>
+            <td th:utext="${c.currency.chrCode}">code</td>
+            <td th:utext="${c.currency.currName}">currName</td>
+            <td th:utext="${c.currency.nominal}">nominal</td>
+            <td th:utext="${c.value}">value</td>
+            <td th:utext="${c.date}">date</td>
         </tr>
     </table>
     </div>

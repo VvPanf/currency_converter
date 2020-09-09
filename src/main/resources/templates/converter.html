@@ -43,22 +43,22 @@
                 </div>
                 <div class="row my-3">
                     <div class="col">
-                        <select th:field="*{fromCurr}" class="form-control">
-                            <option th:each="c : ${currSelect}" th:value="${c.id}" th:text="|${c.code} (${c.currName})|"></option>
+                        <select th:field="*{amountCurrId}" class="form-control">
+                            <option th:each="c : ${currSelect}" th:value="${c.id}" th:text="|${c.chrCode} (${c.currName})|"></option>
                         </select>
                     </div>
                     <div class="col">
-                        <select th:field="*{toCurr}" class="form-control">
-                            <option th:each="c : ${currSelect}" th:value="${c.id}" th:text="|${c.code} (${c.currName})|"></option>
+                        <select th:field="*{resultCurrId}" class="form-control">
+                            <option th:each="c : ${currSelect}" th:value="${c.id}" th:text="|${c.chrCode} (${c.currName})|"></option>
                         </select>
                     </div>
                 </div>
                 <div class="row my-3">
                     <div class="col">
-                        <input type="text" placeholder="Enter value" name="fromValue" th:field="*{fromValue}" class="form-control">
+                        <input type="text" placeholder="Enter value" name="amountCurrId" th:field="*{amount}" class="form-control">
                     </div>
                     <div class="col">
-                        <output type="text" name="toValue" th:text="*{toValue}" class="form-control"></output>
+                        <output type="text" name="resultCurrId" th:text="*{result}" class="form-control"></output>
                     </div>
                 </div>
                 <div class="row my-3">
@@ -66,8 +66,6 @@
                         <button type="submit" class="btn btn-dark">Конвертировать</button>
                     </div>
                 </div>
-                <input type="hidden" name="date" th:field="*{date}">
-                <input type="hidden" name="id" th:field="*{id}">
             </div>
         </form>
     </div>

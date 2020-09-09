@@ -1,9 +1,12 @@
 package converter.service;
 
-import converter.dao.ConvertDao;
+import converter.dto.ConvertHistoryDto;
+import converter.dto.ConvertTableDto;
+import converter.dto.HistoryFilter;
 import converter.entity.Convert;
 import converter.entity.Currency;
 import converter.entity.Rate;
+import converter.entity.User;
 import converter.repo.ConvertRepo;
 import converter.repo.CurrencyRepo;
 import converter.repo.RateRepo;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Сервис для работы с операциями по конвертации валют.
@@ -23,9 +27,6 @@ public class ConvertService {
     private ConvertRepo convertRepo;
 
     @Autowired
-    private ConvertDao convertDao;
-
-    @Autowired
     private CurrencyRepo currencyRepo;
 
     @Autowired
@@ -34,11 +35,13 @@ public class ConvertService {
     @Autowired
     private CurrencyService currencyService;
 
-    public List<Convert> findAll(){
-        return convertRepo.findAll();
+    public List<ConvertHistoryDto> findAll(){
+        List<ConvertHistoryDto> convertHistoryDtos = convertRepo.findAll().stream()
+                .map(c -> new ConvertHistoryDto(c)).collect(Collectors.toList());
+        return convertHistoryDtos;
     }
 
-    public Convert addConvert(Convert convert) {
+    public ConvertHistoryDto addConvert(ConvertHistoryDto convert) {
         Date date = new Date(System.currentTimeMillis());
         try {
             currencyService.getCourses(date);
@@ -46,30 +49,40 @@ public class ConvertService {
         catch (Exception e){
             e.printStackTrace();
         }
-        Currency fromCurrency = currencyRepo.findById(convert.getFromCurr()).get();
-        Currency toCurrency = currencyRepo.findById(convert.getToCurr()).get();
-        Rate fromRate = rateRepo.findByCurrIdAndDate(fromCurrency.getId(), date);
-        Rate toRate = rateRepo.findByCurrIdAndDate(toCurrency.getId(), date);
+        Currency amountCurr = currencyRepo.findById(convert.getAmountCurrId()).get();
+        Currency resultCurr = currencyRepo.findById(convert.getResultCurrId()).get();
+        Rate amountRate = rateRepo.findByCurrencyAndDate(amountCurr, date);
+        Rate resultRate = rateRepo.findByCurrencyAndDate(resultCurr, date);
 
         // Calculate result value
-        Double result = convert.getFromValue() * fromCurrency.getNominal() * fromRate.getValue() / (toCurrency.getNominal() * toRate.getValue());
+        Double result = convert.getAmount() * amountCurr.getNominal() * amountRate.getValue()
+                / (resultCurr.getNominal() * resultRate.getValue());
+        convert.setResult(result);
 
         Convert c = new Convert();
-        c.setUserId(convert.getUserId());
-        c.setFromCurr(convert.getFromCurr());
-        c.setToCurr(convert.getToCurr());
-        c.setFromValue(convert.getFromValue());
-        c.setToValue(result);
+        c.setUser(convert.getUser());
+        c.setAmountCurr(amountCurr);
+        c.setResultCurr(resultCurr);
+        c.setAmount(convert.getAmount());
+        c.setResult(convert.getResult());
         c.setDate(date);
         convertRepo.save(c);
-        return c;
+        return convert;
     }
 
-    public List<Object> getHistory(Integer user){
-        return convertDao.getHistory(user);
+    public List<ConvertTableDto> getHistory(User user){
+        List<ConvertTableDto> convertHistoryDtos = convertRepo.findByUser(user).stream()
+                .map(c -> new ConvertTableDto(c)).collect(Collectors.toList());
+        return convertHistoryDtos;
     }
 
-    public List<Object> getHistoryFilter(Integer user, Date historyDate, Integer historyFromCurr, Integer historyToCurr) {
-        return convertDao.getHistoryFilter(user, historyDate, historyFromCurr, historyToCurr);
+    public List<ConvertTableDto> getHistoryFilter(HistoryFilter historyFilter) {
+        User user = historyFilter.getUser();
+        Date date = historyFilter.getDate();
+        Currency amountCurr = currencyRepo.findById(historyFilter.getAmountCurr()).get();
+        Currency resultCurr = currencyRepo.findById(historyFilter.getResultCurr()).get();
+        List<ConvertTableDto> list = convertRepo.findByDateAndAmountCurrAndResultCurrAndUser(date, amountCurr, resultCurr, user)
+                .stream().map(c -> new ConvertTableDto(c)).collect(Collectors.toList());
+        return list;
     }
 }

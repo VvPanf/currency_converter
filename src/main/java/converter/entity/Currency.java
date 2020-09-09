@@ -1,9 +1,12 @@
 package converter.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 /**
@@ -11,76 +14,23 @@ import java.util.List;
  */
 
 @Entity
-@Table(name = "Currency_list")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Currency {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "curr_id", nullable = false)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    @Column(name = "num_code", length = 3, nullable = false)
+    @Length(max=3)
     private String numCode;
 
-    @Column(name = "code", length = 3, nullable = false)
-    private String code;
+    @Length(max=3)
+    private String chrCode;
 
-    @Column(name = "curr_name", length = 255, nullable = false)
+    @Length(max=255)
     private String currName;
 
-    @Column(name = "nominal")
-    private int nominal;
-
-    @OneToMany(fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
-    private List<Rate> rates;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getCurrName() {
-        return currName;
-    }
-
-    public void setCurrName(String currName) {
-        this.currName = currName;
-    }
-
-    public List<Rate> getRates() {
-        return rates;
-    }
-
-    public void setRates(List<Rate> rates) {
-        this.rates = rates;
-    }
-
-    public String getNumCode() {
-        return numCode;
-    }
-
-    public void setNumCode(String numCode) {
-        this.numCode = numCode;
-    }
-
-    public int getNominal() {
-        return nominal;
-    }
-
-    public void setNominal(int nominal) {
-        this.nominal = nominal;
-    }
+    @Min(value = 0)
+    private Integer nominal;
 }

@@ -1,7 +1,6 @@
 package converter.service;
 
 import converter.component.XmlHandler;
-import converter.dao.CurrencyDao;
 import converter.entity.Currency;
 import converter.entity.Rate;
 import converter.repo.CurrencyRepo;
@@ -18,7 +17,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Сервис для работы с таблицей валют.
@@ -31,22 +32,22 @@ public class CurrencyService {
     @Autowired
     private RateRepo rateRepo;
     @Autowired
-    private CurrencyDao currencyDao;
-    @Autowired
     private XmlHandler xmlHandler;
 
     public List<Currency> findAll(){
         return currencyRepo.findAll();
     }
 
-    public List<Object> findByDate(Date date) {
+    public List<Rate> findByDate(Date date) {
         try {
             getCourses(date);
         }
         catch (Exception e){
             e.printStackTrace();
         }
-        return currencyDao.findByDate(date);
+        List<Rate> rates = rateRepo.findByDate(date).stream()
+                .sorted(Comparator.comparing(o -> o.getCurrency().getNumCode())).collect(Collectors.toList());
+        return rates;
     }
 
     public void getCourses(Date date) throws IOException, ParserConfigurationException, SAXException {
@@ -71,6 +72,6 @@ public class CurrencyService {
         factory.setNamespaceAware(true);
         SAXParser parser = factory.newSAXParser();
         parser.parse(xmlStram, xmlHandler);
-        rateRepo.save(new Rate(0,1,1., date));
+        rateRepo.save(new Rate(0l, currencyRepo.findById(1l).get(),1., date));
     }
 }

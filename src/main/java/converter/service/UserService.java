@@ -28,8 +28,10 @@ public class UserService implements UserDetailsService {
 
     public boolean addUser(User user){
         User userFromDb = userRepo.findByUsername(user.getUsername());
-        if (userFromDb != null) return false;
-        userRepo.save(user);
-        return true;
+        if (userFromDb == null) {
+            userRepo.save(user);
+            return true;
+        }
+        return false;
     }
 }
