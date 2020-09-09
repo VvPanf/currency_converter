@@ -2,7 +2,6 @@ package converter.controller;
 
 import converter.dto.ConvertHistoryDto;
 import converter.dto.HistoryFilter;
-import converter.entity.Currency;
 import converter.entity.Rate;
 import converter.entity.User;
 import converter.service.ConvertService;
