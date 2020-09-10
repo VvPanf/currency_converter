@@ -51,8 +51,8 @@ public class ConvertService {
         }
         Currency amountCurr = currencyRepo.findById(convert.getAmountCurrId()).get();
         Currency resultCurr = currencyRepo.findById(convert.getResultCurrId()).get();
-        Rate amountRate = rateRepo.findByCurrencyAndDate(amountCurr, date);
-        Rate resultRate = rateRepo.findByCurrencyAndDate(resultCurr, date);
+        Rate amountRate = amountCurr.getChrCode().equals("RUB")?new Rate(0l,amountCurr,1., date):rateRepo.findByCurrencyAndDate(amountCurr, date);
+        Rate resultRate = resultCurr.getChrCode().equals("RUB")?new Rate(0l,resultCurr,1., date):rateRepo.findByCurrencyAndDate(resultCurr, date);
 
         // Calculate result value
         Double result = convert.getAmount() * amountCurr.getNominal() * amountRate.getValue()

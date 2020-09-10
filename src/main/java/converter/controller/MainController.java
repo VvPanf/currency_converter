@@ -124,7 +124,7 @@ public class MainController {
             model.addAttribute("userError");
             return "registration";
         }
-        return "index";
+        return "/";
     }
 
     @GetMapping("logout")
