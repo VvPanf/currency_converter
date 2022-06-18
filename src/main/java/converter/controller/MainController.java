@@ -9,29 +9,26 @@ import converter.service.CurrencyService;
 import converter.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.validation.Valid;
 import java.sql.Date;
 import java.util.List;
 
 /**
  * Класс-контроллер
+ * Обрабатывает страницы списка валют, конвертации и истории конвертаций
  * @author Панферов Владимир
  */
 @Controller
 public class MainController {
     @Autowired
     private CurrencyService currencyService;
-
     @Autowired
     private ConvertService convertService;
-
     @Autowired
     private UserService userService;
 
@@ -99,37 +96,5 @@ public class MainController {
         model.addAttribute("converts", convertService.getHistoryFilter(historyFilter));
         model.addAttribute("currSelect", currencyService.findAll());
         return "history";
-    }
-
-    @GetMapping("/login")
-    public String login(){
-        return "login";
-    }
-
-    @GetMapping("/registration")
-    public String registration(){
-        return "registration";
-    }
-
-    @PostMapping("/registration")
-    public String addUser(Model model,
-                          @Valid User user,
-                          BindingResult bindingResult
-    ){
-        if(bindingResult.hasErrors()){
-            model.addAttribute("valueError");
-            return "registration";
-        }
-        if(!userService.addUser(user)){
-            model.addAttribute("userError");
-            return "registration";
-        }
-        return "/";
-    }
-
-    @GetMapping("logout")
-    public String logout(){
-        SecurityContextHolder.clearContext();
-        return "redirect:/index";
     }
 }

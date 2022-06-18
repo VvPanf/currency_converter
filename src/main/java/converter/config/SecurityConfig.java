@@ -11,10 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
- * Класс для конфигурации Spring Security
+ * Класс конфигурации Spring Security
  * @author Панферов Владимир
  */
-
 @Configuration
 @EnableAutoConfiguration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -41,8 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * Метод отменяет шифрование пароля, которое есть по-умолчанию в Spring
-     * @return
+     * Определение объекта для шифрования пароля
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -52,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * Класс для собственного шифрования пароля
      */
-    public class PasswordEnconderTest implements PasswordEncoder {
+    public static class PasswordEnconderTest implements PasswordEncoder {
         @Override
         public String encode(CharSequence charSequence) {
             return charSequence.toString();

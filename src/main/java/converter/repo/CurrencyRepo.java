@@ -4,8 +4,6 @@ import converter.entity.Currency;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
-
 /**
  * @author Панферов Владимир
  */

@@ -45,25 +45,20 @@ public class CurrencyService {
         catch (Exception e){
             e.printStackTrace();
         }
-        List<Rate> rates = rateRepo.findByDate(date).stream()
+        return rateRepo.findByDate(date).stream()
                 .sorted(Comparator.comparing(o -> o.getCurrency().getNumCode())).collect(Collectors.toList());
-        return rates;
     }
 
     public void getCourses(Date date) throws IOException, ParserConfigurationException, SAXException {
         Date maxDate = rateRepo.findByMaxDate();
         String resultDate = new SimpleDateFormat("dd/MM/yyyy").format(date);
-        try {
-            // База данных пуста
-            if (maxDate != null) {
-                String findDate = new SimpleDateFormat("dd/MM/yyyy").format(maxDate);
-                // В базе данныз не актуальные данные
-                if (resultDate.equals(findDate))
-                    return;
+        // База данных пуста
+        if (maxDate != null) {
+            String findDate = new SimpleDateFormat("dd/MM/yyyy").format(maxDate);
+            // В базе данныз не актуальные данные
+            if (resultDate.equals(findDate)) {
+                return;
             }
-        }
-        catch (Exception e){
-            e.printStackTrace();
         }
         URL url = new URL("http://www.cbr.ru/scripts/XML_daily.asp?date_req=" + resultDate);
         InputStream xmlStram = url.openStream();
