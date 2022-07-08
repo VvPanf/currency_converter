@@ -38,7 +38,7 @@ public class MainController {
     }
 
     @GetMapping("/currency")
-    public String showCurrency(Model model) throws Exception{
+    public String showCurrency(Model model) throws Exception {
         Date date = new Date(System.currentTimeMillis());
         List<Rate> currRates = currencyService.findByDate(date);
         model.addAttribute("currRates", currRates);
